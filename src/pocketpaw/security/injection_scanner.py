@@ -214,6 +214,10 @@ class InjectionScanner:
                 messages=[{"role": "user", "content": classifier_prompt}],
             )
 
+            if not response.content:
+                logger.warning("Injection scanner got empty response — keeping heuristic")
+                return result
+
             verdict = response.content[0].text.strip().upper()
 
             if verdict == "SAFE":
